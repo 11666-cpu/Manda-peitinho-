@@ -15,25 +15,68 @@ body {
   overflow: hidden;
 }
 
-/* ===== TELA INICIAL ===== */
+/* ===== TV INICIAL ===== */
 #start {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  background: black;
+}
+
+.tv {
+  width: 90%;
+  max-width: 400px;
+  background: #111;
+  border: 8px solid #ff4da6;
+  box-shadow: 0 0 30px #ff4da6;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.screen {
   background: linear-gradient(#5c94fc, #1d2b53);
+  height: 300px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   color: white;
   text-align: center;
+  position: relative;
+  overflow: hidden;
+  animation: ligar 0.6s ease;
+}
+
+.screen::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.05),
+    rgba(255,255,255,0.05) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+@keyframes ligar {
+  0% {transform: scaleY(0.05); opacity: 0;}
+  50% {transform: scaleY(1.2); opacity: 1;}
+  100% {transform: scaleY(1);}
 }
 
 #start button {
-  margin-top: 20px;
-  padding: 15px;
+  margin-top: 15px;
+  padding: 10px;
   background: #ff4da6;
   border: none;
   color: white;
   cursor: pointer;
+  font-family: 'Press Start 2P', cursive;
 }
 
 /* ===== CRT ===== */
@@ -89,13 +132,17 @@ body {
 
 <body>
 
-<!-- TELA INICIAL -->
+<!-- TV INICIAL -->
 <div id="start">
-  <h2>🎮 CLIQUE PARA JOGAR 🎮</h2>
-  <p>minha mamãe 💖</p>
-  <button onclick="iniciar()">COMEÇAR</button>
+  <div class="tv">
+    <div class="screen">
+      <h3>🎮 START 🎮</h3>
+      <p>clique para jogar<br>minha mamãe 💖</p>
+      <button onclick="iniciar()">JOGAR</button>
+    </div>
+  </div>
 
-  <!-- música mario -->
+  <!-- MARIO -->
   <audio id="mario" loop>
     <source src="Super Mario Bros. - Overworld Theme(MP3_160K).mp3" type="audio/mpeg">
   </audio>
@@ -107,12 +154,12 @@ body {
     <div id="texto"></div>
   </div>
 
-  <!-- música principal -->
+  <!-- ZELDA NOVA -->
   <audio id="musica" loop>
-    <source src="8-Bit Great Fairy_s Fountain Theme (The Legend of Zelda_ Ocarina of Time)(MP3_160K).mp3" type="audio/mpeg">
+    <source src="_Great Fairy_s Fountain_ from Zelda but slowed and reverb (8D audio)(MP3_160K).mp3" type="audio/mpeg">
   </audio>
 
-  <!-- som digitação -->
+  <!-- DIGITAÇÃO -->
   <audio id="type">
     <source src="Som de uma Máquina de escrever(MP3_160K).mp3" type="audio/mpeg">
   </audio>
@@ -157,11 +204,8 @@ function iniciar() {
   document.getElementById("start").style.display = "none";
   document.getElementById("crt").style.display = "block";
 
-  // para música mario
-  const mario = document.getElementById("mario");
-  mario.pause();
+  document.getElementById("mario").pause();
 
-  // começa música principal
   const musica = document.getElementById("musica");
   musica.play().catch(()=>{});
 
@@ -169,10 +213,8 @@ function iniciar() {
   setInterval(criarCoracao, 500);
 }
 
-// toca mario só quando usuário interagir
 document.addEventListener("click", () => {
-  const mario = document.getElementById("mario");
-  mario.play().catch(()=>{});
+  document.getElementById("mario").play().catch(()=>{});
 }, { once: true });
 
 function digitar() {
@@ -184,7 +226,7 @@ function digitar() {
     som.play().catch(()=>{});
 
     i++;
-    setTimeout(digitar, 30);
+    setTimeout(digitar, 60); // MAIS LENTO AQUI
   }
 }
 

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pra você 🖤</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  background: black;
+  font-family: 'Press Start 2P', cursive;
+  overflow: hidden;
+}
+
+/* CRT */
+.crt {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  color: #ff4da6;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.crt::before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.03),
+    rgba(255,255,255,0.03) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+}
+
+.crt::after {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.02);
+  animation: flicker 0.15s infinite;
+  pointer-events: none;
+}
+
+@keyframes flicker {
+  0% {opacity: 0.9;}
+  50% {opacity: 1;}
+  100% {opacity: 0.92;}
+}
+
+.container {
+  border: 6px solid #ff4da6;
+  padding: 20px;
+  box-shadow: 0 0 20px #ff4da6;
+}
+
+h1 {
+  text-align: center;
+  font-size: 14px;
+  text-shadow: 0 0 5px #ff4da6;
+}
+
+p {
+  font-size: 9px;
+  line-height: 1.8;
+  text-shadow: 0 0 5px #ff4da6;
+}
+
+/* efeitos caindo */
+.heart {
+  position: fixed;
+  top: -20px;
+  font-size: 12px;
+  color: #ff4da6;
+  animation: cair linear;
+}
+
+.frase {
+  position: fixed;
+  font-size: 8px;
+  color: white;
+  animation: cair linear;
+}
+
+@keyframes cair {
+  from { transform: translateY(-50px); }
+  to { transform: translateY(110vh); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="crt">
+  <div class="container">
+
+    <h1>PRA VOCÊ 🖤</h1>
+
+    <p>
+    Eu nem sei explicar direito como você conseguiu se tornar tudo isso pra mim.<br><br>
+
+    Mas toda vez que eu escuto The Smiths…<br>
+    é impossível não pensar em você.<br><br>
+
+    Cada música, cada letra, cada sentimento…<br>
+    tudo me lembra você de alguma forma.<br><br>
+
+    E eu fico ali, pensando no quanto você é incrível,<br>
+    no quanto você é única,<br>
+    no quanto você é diferente de tudo que eu já conheci.<br><br>
+
+    Você é linda.<br>
+    Maravilhosa.<br>
+    Perfeita do seu jeito.<br><br>
+
+    Você é minha paz,<br>
+    minha felicidade,<br>
+    minha pessoa favorita nesse mundo inteiro.<br><br>
+
+    E não importa o que aconteça,<br>
+    eu sempre vou lembrar de você<br>
+    como a melhor coisa que já me aconteceu.<br><br>
+
+    Minha neném…<br>
+    minha princesa…<br>
+    minha gostosinha…<br>
+    minha mamãe…<br><br>
+
+    Eu te amo. 🖤
+    </p>
+
+  </div>
+</div>
+
+<script>
+const palavras = [
+"linda 💖",
+"maravilhosa 💕",
+"perfeita ✨",
+"minha neném 🥺",
+"minha gostosinha ",
+"minha mamãe 🖤",
+"te amo ❤️"
+];
+
+function criarElemento() {
+  const el = document.createElement("div");
+
+  if (Math.random() > 0.5) {
+    el.classList.add("heart");
+    el.innerHTML = "💖";
+  } else {
+    el.classList.add("frase");
+    el.innerText = palavras[Math.floor(Math.random() * palavras.length)];
+  }
+
+  el.style.left = Math.random() * 100 + "vw";
+  el.style.animationDuration = (Math.random() * 4 + 3) + "s";
+
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 7000);
+}
+
+setInterval(criarElemento, 500);
+</script>
+
+</body>
+</html>

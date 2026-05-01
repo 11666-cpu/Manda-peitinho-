@@ -15,7 +15,7 @@ body {
   overflow: hidden;
 }
 
-/* TV */
+/* ===== TV INICIAL ===== */
 #start {
   height: 100vh;
   display: flex;
@@ -42,7 +42,7 @@ body {
   color: white;
 }
 
-/* CRT */
+/* ===== CRT ===== */
 #crt {
   display: none;
   color: #ff4da6;
@@ -58,12 +58,15 @@ body {
 
 #texto {
   font-size: 9px;
+  line-height: 1.8;
 }
 
-/* coração */
+/* corações */
 .heart {
   position: fixed;
   top: -20px;
+  font-size: 12px;
+  color: #ff4da6;
   animation: cair linear;
 }
 
@@ -76,66 +79,123 @@ body {
 
 <body>
 
+<!-- TELA INICIAL -->
 <div id="start">
   <div class="tv">
     <div class="screen">
       <h3>🎮 START 🎮</h3>
+      <p>clique para jogar<br>minha mamãe 💖</p>
       <button id="btn">JOGAR</button>
     </div>
   </div>
 
   <audio id="mario" loop>
-    <source src="Super Mario Bros. - Overworld Theme(MP3_160K).mp3">
+    <source src="Super Mario Bros. - Overworld Theme(MP3_160K).mp3" type="audio/mpeg">
   </audio>
 </div>
 
+<!-- CRT -->
 <div id="crt">
   <div class="container">
     <div id="texto"></div>
   </div>
 
   <audio id="musica" loop>
-    <source src="_Great Fairy_s Fountain_ from Zelda but slowed and reverb (8D audio)(MP3_160K).mp3">
+    <source src="_Great Fairy_s Fountain_ from Zelda but slowed and reverb (8D audio)(MP3_160K).mp3" type="audio/mpeg">
   </audio>
 
   <audio id="type">
-    <source src="Som de uma Máquina de escrever(MP3_160K).mp3">
+    <source src="Som de uma Máquina de escrever(MP3_160K).mp3" type="audio/mpeg">
   </audio>
 </div>
 
 <script>
 const btn = document.getElementById("btn");
+const start = document.getElementById("start");
+const crt = document.getElementById("crt");
 
-btn.addEventListener("click", iniciar);
+const mario = document.getElementById("mario");
+const musica = document.getElementById("musica");
+const type = document.getElementById("type");
 
-const texto = "Você é a melhor coisa da minha vida 🖤";
 let i = 0;
 
-function iniciar() {
-  console.log("clicou");
+const textoCompleto = `
+Eu nem sei explicar direito como você conseguiu se tornar tudo isso pra mim.
 
-  document.getElementById("start").style.display = "none";
-  document.getElementById("crt").style.display = "block";
+Mas toda vez que eu escuto The Smiths…
+é impossível não pensar em você.
 
-  document.getElementById("mario").pause();
+Cada música, cada letra, cada sentimento…
+tudo me lembra você de alguma forma.
 
-  const musica = document.getElementById("musica");
-  musica.play().catch(err => console.log("erro musica", err));
+E eu fico ali, pensando no quanto você é incrível,
+no quanto você é única,
+no quanto você é diferente de tudo que eu já conheci.
+
+Você é linda.
+Maravilhosa.
+Perfeita do seu jeito.
+
+Você é minha paz,
+minha felicidade,
+minha pessoa favorita nesse mundo inteiro.
+
+E não importa o que aconteça,
+eu sempre vou lembrar de você
+como a melhor coisa que já me aconteceu.
+
+Minha neném…
+minha gostosinha…
+minha mamãe…
+
+Eu te amo. 🖤
+`;
+
+/* inicia música mario no primeiro toque */
+document.body.addEventListener("click", () => {
+  mario.play().catch(()=>{});
+}, { once: true });
+
+/* botão funcional */
+btn.addEventListener("click", () => {
+  start.style.display = "none";
+  crt.style.display = "block";
+
+  mario.pause();
+
+  musica.currentTime = 0;
+  musica.play().catch(()=>{});
 
   digitar();
-}
+  setInterval(criarCoracao, 500);
+});
 
+/* digitação lenta */
 function digitar() {
-  if (i < texto.length) {
-    document.getElementById("texto").innerHTML += texto.charAt(i);
+  if (i < textoCompleto.length) {
+    document.getElementById("texto").innerHTML += textoCompleto.charAt(i);
 
-    const som = document.getElementById("type");
-    som.currentTime = 0;
-    som.play().catch(()=>{});
+    try {
+      type.currentTime = 0;
+      type.play();
+    } catch {}
 
     i++;
-    setTimeout(digitar, 80);
+    setTimeout(digitar, 70);
   }
+}
+
+/* corações */
+function criarCoracao() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (Math.random() * 4 + 3) + "s";
+
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 7000);
 }
 </script>
 

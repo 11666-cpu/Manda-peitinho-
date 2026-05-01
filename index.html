@@ -15,34 +15,28 @@ body {
   overflow: hidden;
 }
 
-/* TV */
+/* ===== TELA INICIAL ===== */
 #start {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.tv {
-  width: 90%;
-  max-width: 400px;
-  border: 8px solid #ff4da6;
-  box-shadow: 0 0 30px #ff4da6;
-  border-radius: 20px;
-  padding: 10px;
-}
-
-.screen {
-  background: linear-gradient(#5c94fc, #1d2b53);
-  height: 300px;
-  display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  background: linear-gradient(#5c94fc, #1d2b53);
   color: white;
+  text-align: center;
 }
 
-/* CRT */
+#start button {
+  margin-top: 20px;
+  padding: 15px;
+  background: #ff4da6;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* ===== CRT ===== */
 #crt {
   display: none;
   color: #ff4da6;
@@ -51,14 +45,30 @@ body {
   padding: 20px;
 }
 
+#crt::before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.03),
+    rgba(255,255,255,0.03) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
 .container {
   border: 6px solid #ff4da6;
   padding: 20px;
+  box-shadow: 0 0 20px #ff4da6;
 }
 
 #texto {
   font-size: 9px;
   line-height: 1.8;
+  text-shadow: 0 0 5px #ff4da6;
 }
 
 /* corações */
@@ -79,18 +89,15 @@ body {
 
 <body>
 
-<!-- INICIO -->
+<!-- TELA INICIAL -->
 <div id="start">
-  <div class="tv">
-    <div class="screen">
-      <h3>🎮 START 🎮</h3>
-      <p>clique para jogar<br>minha mamãe 💖</p>
-      <button id="btn">JOGAR</button>
-    </div>
-  </div>
+  <h2>🎮 CLIQUE PARA JOGAR 🎮</h2>
+  <p>minha mamãe 💖</p>
+  <button onclick="iniciar()">COMEÇAR</button>
 
+  <!-- música mario -->
   <audio id="mario" loop>
-    <source src="Super Mario Bros. - Overworld Theme(MP3_160K).mp3">
+    <source src="Super Mario Bros. - Overworld Theme(MP3_160K).mp3" type="audio/mpeg">
   </audio>
 </div>
 
@@ -100,26 +107,18 @@ body {
     <div id="texto"></div>
   </div>
 
+  <!-- música principal -->
   <audio id="musica" loop>
-    <source src="_Great Fairy_s Fountain_ from Zelda but slowed and reverb (8D audio)(MP3_160K).mp3">
+    <source src="8-Bit Great Fairy_s Fountain Theme (The Legend of Zelda_ Ocarina of Time)(MP3_160K).mp3" type="audio/mpeg">
   </audio>
 
+  <!-- som digitação -->
   <audio id="type">
-    <source src="Som de uma Máquina de escrever(MP3_160K).mp3">
+    <source src="Som de uma Máquina de escrever(MP3_160K).mp3" type="audio/mpeg">
   </audio>
 </div>
 
 <script>
-const btn = document.getElementById("btn");
-const start = document.getElementById("start");
-const crt = document.getElementById("crt");
-
-const mario = document.getElementById("mario");
-const musica = document.getElementById("musica");
-const type = document.getElementById("type");
-
-let i = 0;
-
 const textoCompleto = `
 Eu nem sei explicar direito como você conseguiu se tornar tudo isso pra mim.
 
@@ -129,9 +128,21 @@ Mas toda vez que eu escuto The Smiths…
 Cada música, cada letra, cada sentimento…
 tudo me lembra você de alguma forma.
 
+E eu fico ali, pensando no quanto você é incrível,
+no quanto você é única,
+no quanto você é diferente de tudo que eu já conheci.
+
 Você é linda.
 Maravilhosa.
-Perfeita.
+Perfeita do seu jeito.
+
+Você é minha paz,
+minha felicidade,
+minha pessoa favorita nesse mundo inteiro.
+
+E não importa o que aconteça,
+eu sempre vou lembrar de você
+como a melhor coisa que já me aconteceu.
 
 Minha neném…
 minha gostosinha…
@@ -140,42 +151,40 @@ minha mamãe…
 Eu te amo. 🖤
 `;
 
-/* 🔥 TOCA MARIO SÓ UMA VEZ QUANDO CLICA NO BOTÃO */
-btn.addEventListener("click", () => {
+let i = 0;
 
-  // inicia mario (pra desbloquear áudio no celular)
+function iniciar() {
+  document.getElementById("start").style.display = "none";
+  document.getElementById("crt").style.display = "block";
+
+  // para música mario
+  const mario = document.getElementById("mario");
+  mario.pause();
+
+  // começa música principal
+  const musica = document.getElementById("musica");
+  musica.play().catch(()=>{});
+
+  digitar();
+  setInterval(criarCoracao, 500);
+}
+
+// toca mario só quando usuário interagir
+document.addEventListener("click", () => {
+  const mario = document.getElementById("mario");
   mario.play().catch(()=>{});
-
-  setTimeout(() => {
-
-    // troca tela
-    start.style.display = "none";
-    crt.style.display = "block";
-
-    // para mario
-    mario.pause();
-    mario.currentTime = 0;
-
-    // toca zelda
-    musica.play().catch(()=>{});
-
-    digitar();
-    setInterval(criarCoracao, 500);
-
-  }, 200); // pequeno delay pra garantir áudio funcionar
-});
+}, { once: true });
 
 function digitar() {
   if (i < textoCompleto.length) {
     document.getElementById("texto").innerHTML += textoCompleto.charAt(i);
 
-    try {
-      type.currentTime = 0;
-      type.play();
-    } catch {}
+    const som = document.getElementById("type");
+    som.currentTime = 0;
+    som.play().catch(()=>{});
 
     i++;
-    setTimeout(digitar, 70);
+    setTimeout(digitar, 30);
   }
 }
 

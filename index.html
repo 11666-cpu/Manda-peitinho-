@@ -152,18 +152,23 @@ minha mamãe…
 Eu te amo. 🖤
 `;
 
-/* inicia música mario no primeiro toque */
-document.body.addEventListener("click", () => {
+/* toca Mario ao interagir com a tela inicial */
+start.addEventListener("click", () => {
   mario.play().catch(()=>{});
 }, { once: true });
 
-/* botão funcional */
-btn.addEventListener("click", () => {
+/* botão jogar */
+btn.addEventListener("click", (e) => {
+  e.stopPropagation(); // evita conflito
+
   start.style.display = "none";
   crt.style.display = "block";
 
+  // PARA mario completamente
   mario.pause();
+  mario.currentTime = 0;
 
+  // toca Zelda
   musica.currentTime = 0;
   musica.play().catch(()=>{});
 
@@ -171,7 +176,7 @@ btn.addEventListener("click", () => {
   setInterval(criarCoracao, 500);
 });
 
-/* digitação lenta */
+/* digitação */
 function digitar() {
   if (i < textoCompleto.length) {
     document.getElementById("texto").innerHTML += textoCompleto.charAt(i);

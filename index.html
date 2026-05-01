@@ -15,7 +15,6 @@ body {
   overflow: hidden;
 }
 
-/* ===== TELA INICIAL ===== */
 #start {
   height: 100vh;
   display: flex;
@@ -36,7 +35,6 @@ body {
   cursor: pointer;
 }
 
-/* ===== CRT ===== */
 #crt {
   display: none;
   color: #ff4da6;
@@ -71,7 +69,6 @@ body {
   text-shadow: 0 0 5px #ff4da6;
 }
 
-/* corações */
 .heart {
   position: fixed;
   top: -20px;
@@ -89,30 +86,26 @@ body {
 
 <body>
 
-<!-- TELA INICIAL -->
 <div id="start">
   <h2>🎮 CLIQUE PARA JOGAR 🎮</h2>
   <p>minha mamãe 💖</p>
   <button onclick="iniciar()">COMEÇAR</button>
 
-  <!-- música mario -->
   <audio id="mario" loop>
     <source src="Super Mario Bros. - Overworld Theme(MP3_160K).mp3" type="audio/mpeg">
   </audio>
 </div>
 
-<!-- CRT -->
 <div id="crt">
   <div class="container">
     <div id="texto"></div>
   </div>
 
-  <!-- música principal -->
+  <!-- 🔥 MÚSICA TROCADA AQUI -->
   <audio id="musica" loop>
-    <source src="8-Bit Great Fairy_s Fountain Theme (The Legend of Zelda_ Ocarina of Time)(MP3_160K).mp3" type="audio/mpeg">
+    <source src="_Great Fairy_s Fountain_ from Zelda but slowed and reverb (8D audio)(MP3_160K).mp3" type="audio/mpeg">
   </audio>
 
-  <!-- som digitação -->
   <audio id="type">
     <source src="Som de uma Máquina de escrever(MP3_160K).mp3" type="audio/mpeg">
   </audio>
@@ -157,11 +150,10 @@ function iniciar() {
   document.getElementById("start").style.display = "none";
   document.getElementById("crt").style.display = "block";
 
-  // para música mario
   const mario = document.getElementById("mario");
   mario.pause();
+  mario.currentTime = 0;
 
-  // começa música principal
   const musica = document.getElementById("musica");
   musica.play().catch(()=>{});
 
@@ -169,7 +161,6 @@ function iniciar() {
   setInterval(criarCoracao, 500);
 }
 
-// toca mario só quando usuário interagir
 document.addEventListener("click", () => {
   const mario = document.getElementById("mario");
   mario.play().catch(()=>{});
@@ -184,7 +175,7 @@ function digitar() {
     som.play().catch(()=>{});
 
     i++;
-    setTimeout(digitar, 30);
+    setTimeout(digitar, 80); // 🔥 MAIS LENTO AQUI
   }
 }
 

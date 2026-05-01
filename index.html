@@ -15,7 +15,7 @@ body {
   overflow: hidden;
 }
 
-/* ===== TV INICIAL ===== */
+/* TV */
 #start {
   height: 100vh;
   display: flex;
@@ -42,7 +42,7 @@ body {
   color: white;
 }
 
-/* ===== CRT ===== */
+/* CRT */
 #crt {
   display: none;
   color: #ff4da6;
@@ -79,7 +79,7 @@ body {
 
 <body>
 
-<!-- TELA INICIAL -->
+<!-- INICIO -->
 <div id="start">
   <div class="tv">
     <div class="screen">
@@ -90,7 +90,7 @@ body {
   </div>
 
   <audio id="mario" loop>
-    <source src="Super Mario Bros. - Overworld Theme(MP3_160K).mp3" type="audio/mpeg">
+    <source src="Super Mario Bros. - Overworld Theme(MP3_160K).mp3">
   </audio>
 </div>
 
@@ -101,11 +101,11 @@ body {
   </div>
 
   <audio id="musica" loop>
-    <source src="_Great Fairy_s Fountain_ from Zelda but slowed and reverb (8D audio)(MP3_160K).mp3" type="audio/mpeg">
+    <source src="_Great Fairy_s Fountain_ from Zelda but slowed and reverb (8D audio)(MP3_160K).mp3">
   </audio>
 
   <audio id="type">
-    <source src="Som de uma Máquina de escrever(MP3_160K).mp3" type="audio/mpeg">
+    <source src="Som de uma Máquina de escrever(MP3_160K).mp3">
   </audio>
 </div>
 
@@ -129,21 +129,9 @@ Mas toda vez que eu escuto The Smiths…
 Cada música, cada letra, cada sentimento…
 tudo me lembra você de alguma forma.
 
-E eu fico ali, pensando no quanto você é incrível,
-no quanto você é única,
-no quanto você é diferente de tudo que eu já conheci.
-
 Você é linda.
 Maravilhosa.
-Perfeita do seu jeito.
-
-Você é minha paz,
-minha felicidade,
-minha pessoa favorita nesse mundo inteiro.
-
-E não importa o que aconteça,
-eu sempre vou lembrar de você
-como a melhor coisa que já me aconteceu.
+Perfeita.
 
 Minha neném…
 minha gostosinha…
@@ -152,31 +140,31 @@ minha mamãe…
 Eu te amo. 🖤
 `;
 
-/* toca Mario ao interagir com a tela inicial */
-start.addEventListener("click", () => {
+/* 🔥 TOCA MARIO SÓ UMA VEZ QUANDO CLICA NO BOTÃO */
+btn.addEventListener("click", () => {
+
+  // inicia mario (pra desbloquear áudio no celular)
   mario.play().catch(()=>{});
-}, { once: true });
 
-/* botão jogar */
-btn.addEventListener("click", (e) => {
-  e.stopPropagation(); // evita conflito
+  setTimeout(() => {
 
-  start.style.display = "none";
-  crt.style.display = "block";
+    // troca tela
+    start.style.display = "none";
+    crt.style.display = "block";
 
-  // PARA mario completamente
-  mario.pause();
-  mario.currentTime = 0;
+    // para mario
+    mario.pause();
+    mario.currentTime = 0;
 
-  // toca Zelda
-  musica.currentTime = 0;
-  musica.play().catch(()=>{});
+    // toca zelda
+    musica.play().catch(()=>{});
 
-  digitar();
-  setInterval(criarCoracao, 500);
+    digitar();
+    setInterval(criarCoracao, 500);
+
+  }, 200); // pequeno delay pra garantir áudio funcionar
 });
 
-/* digitação */
 function digitar() {
   if (i < textoCompleto.length) {
     document.getElementById("texto").innerHTML += textoCompleto.charAt(i);
@@ -191,7 +179,6 @@ function digitar() {
   }
 }
 
-/* corações */
 function criarCoracao() {
   const heart = document.createElement("div");
   heart.classList.add("heart");

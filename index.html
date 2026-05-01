@@ -15,19 +15,17 @@ body {
   overflow: hidden;
 }
 
-/* ===== TV INICIAL ===== */
+/* TV */
 #start {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: black;
 }
 
 .tv {
   width: 90%;
   max-width: 400px;
-  background: #111;
   border: 8px solid #ff4da6;
   box-shadow: 0 0 30px #ff4da6;
   border-radius: 20px;
@@ -37,49 +35,14 @@ body {
 .screen {
   background: linear-gradient(#5c94fc, #1d2b53);
   height: 300px;
-  border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   color: white;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  animation: ligar 0.6s ease;
 }
 
-.screen::before {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(255,255,255,0.05),
-    rgba(255,255,255,0.05) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-}
-
-@keyframes ligar {
-  0% {transform: scaleY(0.05); opacity: 0;}
-  50% {transform: scaleY(1.2); opacity: 1;}
-  100% {transform: scaleY(1);}
-}
-
-#start button {
-  margin-top: 15px;
-  padding: 10px;
-  background: #ff4da6;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-family: 'Press Start 2P', cursive;
-}
-
-/* ===== CRT ===== */
+/* CRT */
 #crt {
   display: none;
   color: #ff4da6;
@@ -88,38 +51,19 @@ body {
   padding: 20px;
 }
 
-#crt::before {
-  content: "";
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(255,255,255,0.03),
-    rgba(255,255,255,0.03) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-}
-
 .container {
   border: 6px solid #ff4da6;
   padding: 20px;
-  box-shadow: 0 0 20px #ff4da6;
 }
 
 #texto {
   font-size: 9px;
-  line-height: 1.8;
-  text-shadow: 0 0 5px #ff4da6;
 }
 
-/* corações */
+/* coração */
 .heart {
   position: fixed;
   top: -20px;
-  font-size: 12px;
-  color: #ff4da6;
   animation: cair linear;
 }
 
@@ -132,113 +76,66 @@ body {
 
 <body>
 
-<!-- TV INICIAL -->
 <div id="start">
   <div class="tv">
     <div class="screen">
       <h3>🎮 START 🎮</h3>
-      <p>clique para jogar<br>minha mamãe 💖</p>
-      <button onclick="iniciar()">JOGAR</button>
+      <button id="btn">JOGAR</button>
     </div>
   </div>
 
-  <!-- MARIO -->
   <audio id="mario" loop>
-    <source src="Super Mario Bros. - Overworld Theme(MP3_160K).mp3" type="audio/mpeg">
+    <source src="Super Mario Bros. - Overworld Theme(MP3_160K).mp3">
   </audio>
 </div>
 
-<!-- CRT -->
 <div id="crt">
   <div class="container">
     <div id="texto"></div>
   </div>
 
-  <!-- ZELDA NOVA -->
   <audio id="musica" loop>
-    <source src="_Great Fairy_s Fountain_ from Zelda but slowed and reverb (8D audio)(MP3_160K).mp3" type="audio/mpeg">
+    <source src="_Great Fairy_s Fountain_ from Zelda but slowed and reverb (8D audio)(MP3_160K).mp3">
   </audio>
 
-  <!-- DIGITAÇÃO -->
   <audio id="type">
-    <source src="Som de uma Máquina de escrever(MP3_160K).mp3" type="audio/mpeg">
+    <source src="Som de uma Máquina de escrever(MP3_160K).mp3">
   </audio>
 </div>
 
 <script>
-const textoCompleto = `
-Eu nem sei explicar direito como você conseguiu se tornar tudo isso pra mim.
+const btn = document.getElementById("btn");
 
-Mas toda vez que eu escuto The Smiths…
-é impossível não pensar em você.
+btn.addEventListener("click", iniciar);
 
-Cada música, cada letra, cada sentimento…
-tudo me lembra você de alguma forma.
-
-E eu fico ali, pensando no quanto você é incrível,
-no quanto você é única,
-no quanto você é diferente de tudo que eu já conheci.
-
-Você é linda.
-Maravilhosa.
-Perfeita do seu jeito.
-
-Você é minha paz,
-minha felicidade,
-minha pessoa favorita nesse mundo inteiro.
-
-E não importa o que aconteça,
-eu sempre vou lembrar de você
-como a melhor coisa que já me aconteceu.
-
-Minha neném…
-minha gostosinha…
-minha mamãe…
-
-Eu te amo. 🖤
-`;
-
+const texto = "Você é a melhor coisa da minha vida 🖤";
 let i = 0;
 
 function iniciar() {
+  console.log("clicou");
+
   document.getElementById("start").style.display = "none";
   document.getElementById("crt").style.display = "block";
 
   document.getElementById("mario").pause();
 
   const musica = document.getElementById("musica");
-  musica.play().catch(()=>{});
+  musica.play().catch(err => console.log("erro musica", err));
 
   digitar();
-  setInterval(criarCoracao, 500);
 }
 
-document.addEventListener("click", () => {
-  document.getElementById("mario").play().catch(()=>{});
-}, { once: true });
-
 function digitar() {
-  if (i < textoCompleto.length) {
-    document.getElementById("texto").innerHTML += textoCompleto.charAt(i);
+  if (i < texto.length) {
+    document.getElementById("texto").innerHTML += texto.charAt(i);
 
     const som = document.getElementById("type");
     som.currentTime = 0;
     som.play().catch(()=>{});
 
     i++;
-    setTimeout(digitar, 60); // MAIS LENTO AQUI
+    setTimeout(digitar, 80);
   }
-}
-
-function criarCoracao() {
-  const heart = document.createElement("div");
-  heart.classList.add("heart");
-  heart.innerHTML = "💖";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.animationDuration = (Math.random() * 4 + 3) + "s";
-
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 7000);
 }
 </script>
 
